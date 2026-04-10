@@ -124,23 +124,33 @@ def read_all_encoder():
         encoder_now[i] = encoder_val
 
 def retrieve_sound_theta():
-    return 90
+    # data = spi.xfer2([0, 0, 0, 0])
+    # if data[0] == 0xAA:
+    #     theta = (data[1] << 16) | (data[3]) << 8 | data[3]
+    #     return theta * 360 / (2 ** 23) 
+    print("[ERROR] failed to retrieve sound data properly")
+    return 0
 
 def orient():
-
     # stop moving and take a reading
     control_pwm(0, 0, 0, 0)
     time.sleep(1)
     theta_to_turn = retrieve_sound_theta()
     odometry_to_turn = (FULL_TURN_ODOMETRY / 360) * theta_to_turn
 
-    # perform turn
-    read_all_encoder()
-    initial = [x for x in encoder_now]
-    while not all(a >= odometry_to_turn for a in [abs(x - y) for x, y in zip(encoder_now, initial)]):
-        control_speed(*rotate())
+    while 10 < abs(odometry_to_turn) > 350:
+        # perform turn
         read_all_encoder()
-    control_pwm(0, 0, 0, 0)
+        initial = [x for x in encoder_now]
+        while not all(a >= odometry_to_turn for a in [abs(x - y) for x, y in zip(encoder_now, initial)]):
+            control_speed(*rotate())
+            read_all_encoder()
+        control_pwm(0, 0, 0, 0)
+
+        # stop moving and take a reading
+        time.sleep(1)
+        theta_to_turn = retrieve_sound_theta()
+        odometry_to_turn = (FULL_TURN_ODOMETRY / 360) * theta_to_turn
     
     return time.time()
 
