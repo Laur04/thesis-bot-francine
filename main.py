@@ -41,7 +41,6 @@ READ_TEN_M4_ENCODER_REG = 0x13
 
 ## GLOBALS
 # navigation
-state = "FORWARD"
 encoder_now = [0] * 4
 
 # I2C
