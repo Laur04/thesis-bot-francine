@@ -206,10 +206,11 @@ if __name__ == "__main__":
             # Check if destination has been reached
 
             # Obstacle avoidance
-            d = read_distance
+            d = read_distance()
             if d < STOP_DISTANCE:
                 while read_distance() < STOP_DISTANCE:
                     control_speed(*rotate())
+                    d = read_distance()
                 time.sleep(1)  # finish the turn
             
             # Straight travel
