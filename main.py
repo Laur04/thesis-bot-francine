@@ -7,7 +7,7 @@ from lidar_lite import read_distance
 
 ## CONSTANTS
 # navigation
-DEFAULT_CRUISE_SPEED = 150
+DEFAULT_CRUISE_SPEED = 400
 DEFAULT_TURN_SPEED = 50
 STOP_DISTANCE = 50
 REORIENT_TIME = 10
