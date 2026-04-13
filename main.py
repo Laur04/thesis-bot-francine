@@ -7,7 +7,7 @@ from lidar_lite import read_distance
 
 ## CONSTANTS
 # navigation
-DEFAULT_CRUISE_SPEED = 120
+DEFAULT_CRUISE_SPEED = 150
 DEFAULT_TURN_SPEED = 50
 STOP_DISTANCE = 50
 REORIENT_TIME = 10
@@ -206,9 +206,11 @@ if __name__ == "__main__":
             # Check if destination has been reached
 
             # Obstacle avoidance
-            if read_distance() < STOP_DISTANCE:
+            d = read_distance
+            if d < STOP_DISTANCE:
                 while read_distance() < STOP_DISTANCE:
                     control_speed(*rotate())
+                time.sleep(1)  # finish the turn
             
             # Straight travel
             print("going straight")
