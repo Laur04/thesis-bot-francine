@@ -124,13 +124,13 @@ def control_pwm(m1, m2, m3, m4):
 
 # navigation
 def straight(speed=DEFAULT_CRUISE_SPEED):
-    fl = br = speed
-    fr = bl = -speed
+    fl = fr = speed
+    br = bl = -speed
     return fl, fr, bl, br
 
 def rotate(speed=DEFAULT_TURN_SPEED):
-    fl = fr = speed
-    bl = br = -speed
+    fl = br = speed
+    bl = fr = -speed
     return fl, fr, bl, br
 
 def read_all_encoder():

@@ -74,12 +74,6 @@ def set_wheel_dis(data):
     i2c_write(MOTOR_MODEL_ADDR, WHEEL_DIA_REG, list(bytes_data))
 
 def control_speed(m1, m2, m3, m4):
-    # speeds = [
-    #     (m1 >> 8) & 0xFF, m1 & 0xFF,
-    #     (m2 >> 8) & 0xFF, m2 & 0xFF,
-    #     (m3 >> 8) & 0xFF, m3 & 0xFF,
-    #     (m4 >> 8) & 0xFF, m4 & 0xFF
-    # ]
     speeds = [
         (m4 >> 8) & 0xFF, m4 & 0xFF,
         (m1 >> 8) & 0xFF, m1 & 0xFF,
@@ -90,12 +84,6 @@ def control_speed(m1, m2, m3, m4):
     i2c_write(MOTOR_MODEL_ADDR, SPEED_CONTROL_REG, speeds)
 
 def control_pwm(m1, m2, m3, m4):
-    # pwms = [
-    #     (m1 >> 8) & 0xFF, m1 & 0xFF,
-    #     (m2 >> 8) & 0xFF, m2 & 0xFF,
-    #     (m3 >> 8) & 0xFF, m3 & 0xFF,
-    #     (m4 >> 8) & 0xFF, m4 & 0xFF
-    # ]
     pwms = [
         (m4 >> 8) & 0xFF, m4 & 0xFF,
         (m1 >> 8) & 0xFF, m1 & 0xFF,
