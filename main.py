@@ -220,5 +220,5 @@ if __name__ == "__main__":
             time.sleep(0.05)
 
     # To stop all motor activity
-    except KeyboardInterrupt:
+    except:
         control_pwm(0, 0, 0, 0)
