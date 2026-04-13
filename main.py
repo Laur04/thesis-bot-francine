@@ -115,7 +115,7 @@ def control_pwm(m1, m2, m3, m4):
     #     (m4 >> 8) & 0xFF, m4 & 0xFF
     # ]
     pwms = [
-        (m4 >> 8) & 0xFF, m4 & 0xFF
+        (m4 >> 8) & 0xFF, m4 & 0xFF,
         (m1 >> 8) & 0xFF, m1 & 0xFF,
         (m3 >> 8) & 0xFF, m3 & 0xFF,
         (m2 >> 8) & 0xFF, m2 & 0xFF
