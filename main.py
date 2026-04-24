@@ -1,4 +1,5 @@
 import smbus
+import spidev
 import struct
 import time
 
@@ -54,6 +55,7 @@ READ_TEN_M4_ENCODER_REG = 0x10
 ## GLOBALS
 # navigation
 encoder_now = [0] * 4
+spi = spidev.SpiDev()
 
 # I2C
 bus = smbus.SMBus(1)
@@ -148,19 +150,27 @@ def read_all_encoder():
             encoder_val -= 0x100000000
         encoder_now[i] = encoder_val
 
-def retrieve_sound_theta():
-    # data = spi.xfer2([0, 0, 0, 0])
-    # if data[0] == 0xAA:
-    #     theta = (data[1] << 16) | (data[3]) << 8 | data[3]
-    #     return theta * 360 / (2 ** 23) 
-    print("[ERROR] failed to retrieve sound data properly")
-    return 0
+def retrieve_sound_theta_and_r():
+    try:
+        data = spi.xfer2([0, 0, 0, 0, 0, 0, 0, 0])
+
+        header = (data[0] << 8 | data[1])
+
+        if header == 0xAAAA:
+            theta = (data[5] << 16 | data[6] << 8 | data[7])
+            R = (data[4] << 16 | data[3] << 8 | data[2])
+            angle_deg = theta * 360.0 / (2**24 - 1)
+
+        return angle_deg, R
+    except:
+        print("[ERROR] failed to retrieve sound data properly")
+        return 0
 
 def orient():
     # stop moving and take a reading
     control_pwm(0, 0, 0, 0)
     time.sleep(1)
-    theta_to_turn = retrieve_sound_theta()
+    theta_to_turn, _ = retrieve_sound_theta_and_r()
     odometry_to_turn = (FULL_TURN_ODOMETRY / 360) * theta_to_turn
 
     while 10 < abs(odometry_to_turn) > 350:
@@ -174,7 +184,7 @@ def orient():
 
         # stop moving and take a reading
         time.sleep(1)
-        theta_to_turn = retrieve_sound_theta()
+        theta_to_turn, _ = retrieve_sound_theta_and_r()
         odometry_to_turn = (FULL_TURN_ODOMETRY / 360) * theta_to_turn
     
     return time.time()
@@ -194,6 +204,11 @@ if __name__ == "__main__":
     time.sleep(0.1)
     set_motor_deadzone(1600)
 
+    # SPI initialization
+    spi.open(0, 0)
+    spi.mode = 1
+    spi.max_speed_hz = 1000000 #1MHz
+
     # Main control loop
     try:
         last_orient_time = orient()
@@ -204,6 +219,10 @@ if __name__ == "__main__":
                 last_orient_time = orient()
 
             # Check if destination has been reached
+            _, r = retrieve_sound_theta_and_r()
+            if r < 5:
+                control_pwm(0, 0, 0, 0)
+                break
 
             # Obstacle avoidance
             d = read_distance()
@@ -218,6 +237,8 @@ if __name__ == "__main__":
             control_speed(*straight())
 
             time.sleep(0.05)
+
+        print("Goal Achieved")
 
     # To stop all motor activity
     except:
