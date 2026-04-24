@@ -209,10 +209,12 @@ if __name__ == "__main__":
     spi.mode = 1
     spi.max_speed_hz = 1000000 #1MHz
 
+    while True:
+        retrieve_sound_theta_and_r()
+
     # Main control loop
     try:
-        while True:
-            last_orient_time = orient()
+        last_orient_time = orient()
         while True:
 
             # Reorient to the sound every REORIENT_TIME seconds
