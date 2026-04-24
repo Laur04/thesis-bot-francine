@@ -205,7 +205,7 @@ if __name__ == "__main__":
     set_motor_deadzone(1600)
 
     # SPI initialization
-    spi.open(0, 0)
+    spi.open(0, 1)
     spi.mode = 1
     spi.max_speed_hz = 1000000 #1MHz
 
