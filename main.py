@@ -164,7 +164,7 @@ def retrieve_sound_theta_and_r():
         return angle_deg, R
     except:
         print("[ERROR] failed to retrieve sound data properly")
-        return 0
+        return 0, 800
 
 def orient():
     # stop moving and take a reading
