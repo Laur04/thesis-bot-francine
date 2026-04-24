@@ -151,20 +151,19 @@ def read_all_encoder():
         encoder_now[i] = encoder_val
 
 def retrieve_sound_theta_and_r():
-    try:
-        data = spi.xfer2([0, 0, 0, 0, 0, 0, 0, 0])
+    data = spi.xfer2([0, 0, 0, 0, 0, 0, 0, 0])
 
-        header = (data[0] << 8 | data[1])
+    header = (data[0] << 8 | data[1])
 
-        if header == 0xAAAA:
-            theta = (data[5] << 16 | data[6] << 8 | data[7])
-            R = (data[4] << 16 | data[3] << 8 | data[2])
-            angle_deg = theta * 360.0 / (2**24 - 1)
+    if header == 0xAAAA:
+        theta = (data[5] << 16 | data[6] << 8 | data[7])
+        R = (data[4] << 16 | data[3] << 8 | data[2])
+        angle_deg = theta * 360.0 / (2**24 - 1)
 
-        return angle_deg, R
-    except:
-        print("[ERROR] failed to retrieve sound data properly")
-        return 0, 800
+    return angle_deg, R
+    # except:
+    #     print("[ERROR] failed to retrieve sound data properly")
+    #     return 0, 800
 
 def orient():
     # stop moving and take a reading
