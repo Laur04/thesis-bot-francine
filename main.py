@@ -152,6 +152,7 @@ def read_all_encoder():
 
 def retrieve_sound_theta_and_r():
     data = spi.xfer2([0, 0, 0, 0, 0, 0, 0, 0])
+    print(data)
 
     header = (data[0] << 8 | data[1])
 
@@ -210,7 +211,8 @@ if __name__ == "__main__":
 
     # Main control loop
     try:
-        last_orient_time = orient()
+        while True:
+            last_orient_time = orient()
         while True:
 
             # Reorient to the sound every REORIENT_TIME seconds
