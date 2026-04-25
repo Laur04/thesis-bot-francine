@@ -182,7 +182,7 @@ def orient():
         read_all_encoder()
         initial = [x for x in encoder_now]
         print(f"Initial encoder values: {initial})")
-        while not all(a >= odometry_to_turn for a in [abs(x - y) for x, y in zip(encoder_now, initial)]):
+        while not all(a >= odometry_to_turn for a in [abs(x - y) for x, y in zip(encoder_now, initial)][:3]):
             control_speed(*rotate())
             read_all_encoder()
             print(f"Encoder value: {encoder_now}")
