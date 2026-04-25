@@ -175,14 +175,17 @@ def orient():
     time.sleep(1)
     theta_to_turn, _ = retrieve_sound_theta_and_r()
     odometry_to_turn = (FULL_TURN_ODOMETRY / 360) * theta_to_turn
+    print(f"Turning {theta_to_turn} degree; odometry {odometry_to_turn}")
 
     while 10 < abs(theta_to_turn) < 350:
         # perform turn
         read_all_encoder()
         initial = [x for x in encoder_now]
+        print(f"Initial encoder values: {initial})")
         while not all(a >= odometry_to_turn for a in [abs(x - y) for x, y in zip(encoder_now, initial)]):
             control_speed(*rotate())
             read_all_encoder()
+            print(f"Encoder value: {encoder_now}")
         control_pwm(0, 0, 0, 0)
 
         # stop moving and take a reading
