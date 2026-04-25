@@ -11,7 +11,7 @@ from lidar_lite import read_distance
 DEFAULT_CRUISE_SPEED = 400
 DEFAULT_TURN_SPEED = 50
 STOP_DISTANCE = 50
-REORIENT_TIME = 10
+REORIENT_TIME = 20
 FULL_TURN_ODOMETRY = 5600
 
 # motor control
