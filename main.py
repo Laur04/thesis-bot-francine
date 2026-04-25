@@ -165,15 +165,13 @@ def retrieve_sound_theta_and_r():
     # # except:
     # #     print("[ERROR] failed to retrieve sound data properly")
     # #     return 0, 800
-    theta = int(input("Theta:"))
-    r = int(input("R:"))
-    return theta, r
+    return int(input("Theta:"))
 
 def orient():
     # stop moving and take a reading
     control_pwm(0, 0, 0, 0)
     time.sleep(1)
-    theta_to_turn, _ = retrieve_sound_theta_and_r()
+    theta_to_turn = retrieve_sound_theta_and_r()
     odometry_to_turn = (FULL_TURN_ODOMETRY / 360) * theta_to_turn
     print(f"Turning {theta_to_turn} degree; odometry {odometry_to_turn}")
 
@@ -190,7 +188,7 @@ def orient():
 
         # stop moving and take a reading
         time.sleep(1)
-        theta_to_turn, _ = retrieve_sound_theta_and_r()
+        theta_to_turn = retrieve_sound_theta_and_r()
         odometry_to_turn = (FULL_TURN_ODOMETRY / 360) * theta_to_turn
     
     return time.time()
@@ -224,11 +222,11 @@ if __name__ == "__main__":
             if time.time() - last_orient_time > REORIENT_TIME:
                 last_orient_time = orient()
 
-            # Check if destination has been reached
-            _, r = retrieve_sound_theta_and_r()
-            if r < 5:
-                control_pwm(0, 0, 0, 0)
-                break
+            # # Check if destination has been reached
+            # _, r = retrieve_sound_theta_and_r()
+            # if r < 5:
+            #     control_pwm(0, 0, 0, 0)
+            #     break
 
             # Obstacle avoidance
             d = read_distance()
