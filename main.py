@@ -168,7 +168,7 @@ def retrieve_sound_theta_and_r():
     # theta = int(input("Theta:"))
     # r = int(input("R:"))
     # return theta, r
-    return 0, 0
+    return 0, 9000
 
 def orient():
     # stop moving and take a reading
