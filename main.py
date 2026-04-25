@@ -167,6 +167,7 @@ def retrieve_sound_theta_and_r():
     # #     return 0, 800
     theta = int(input("Theta:"))
     r = int(input("R:"))
+    return theta, r
 
 def orient():
     # stop moving and take a reading
@@ -175,7 +176,7 @@ def orient():
     theta_to_turn, _ = retrieve_sound_theta_and_r()
     odometry_to_turn = (FULL_TURN_ODOMETRY / 360) * theta_to_turn
 
-    while 10 < abs(odometry_to_turn) > 350:
+    while 10 < abs(odometry_to_turn) < 350:
         # perform turn
         read_all_encoder()
         initial = [x for x in encoder_now]
