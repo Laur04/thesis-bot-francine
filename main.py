@@ -10,7 +10,7 @@ from lidar_lite import read_distance
 # navigation
 DEFAULT_CRUISE_SPEED = 400
 DEFAULT_TURN_SPEED = 50
-STOP_DISTANCE = 50
+STOP_DISTANCE = 70
 REORIENT_TIME = 20
 FULL_TURN_ODOMETRY = 5600
 
@@ -130,9 +130,9 @@ def straight(speed=DEFAULT_CRUISE_SPEED):
     br = bl = -speed
     return fl, fr, bl, br
 
-def rotate(speed=DEFAULT_TURN_SPEED):
-    fl = br = speed
-    bl = fr = -speed
+def rotate(direction=1, speed=DEFAULT_TURN_SPEED):
+    fl = br = speed * direction
+    bl = fr = -speed * direction
     return fl, fr, bl, br
 
 def read_all_encoder():
@@ -167,7 +167,7 @@ def retrieve_sound_theta_and_r():
     # #     return 0, 800
     return int(input("Theta:"))
 
-def orient():
+def orient(direction=1):
     # stop moving and take a reading
     control_pwm(0, 0, 0, 0)
     time.sleep(1)
@@ -175,13 +175,16 @@ def orient():
     odometry_to_turn = (FULL_TURN_ODOMETRY / 360) * theta_to_turn
     print(f"Turning {theta_to_turn} degree; odometry {odometry_to_turn}")
 
+    if theta_to_turn < 0:
+        direction = -1
+
     while 10 < abs(theta_to_turn) < 350:
         # perform turn
         read_all_encoder()
         initial = [x for x in encoder_now]
         print(f"Initial encoder values: {initial})")
         while not all(a >= odometry_to_turn for a in [abs(x - y) for x, y in zip(encoder_now, initial)][:3]):
-            control_speed(*rotate())
+            control_speed(*rotate(direction))
             read_all_encoder()
             print(f"Encoder value: {encoder_now}")
         control_pwm(0, 0, 0, 0)
@@ -216,6 +219,7 @@ if __name__ == "__main__":
     # Main control loop
     try:
         last_orient_time = orient()
+        avoid_direction = 1
         while True:
 
             # Reorient to the sound every REORIENT_TIME seconds
@@ -234,6 +238,7 @@ if __name__ == "__main__":
                 while read_distance() < STOP_DISTANCE:
                     control_speed(*rotate())
                     d = read_distance()
+                avoid_direction = avoid_direction * -1
             
             # Straight travel
             print("going straight")
