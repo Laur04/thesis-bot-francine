@@ -10,7 +10,7 @@ from lidar_lite import read_distance
 # navigation
 DEFAULT_CRUISE_SPEED = 400
 DEFAULT_TURN_SPEED = 50
-STOP_DISTANCE = 70
+STOP_DISTANCE = 60
 REORIENT_TIME = 20
 FULL_TURN_ODOMETRY = 5600
 
@@ -236,7 +236,7 @@ if __name__ == "__main__":
             d = read_distance()
             if d < STOP_DISTANCE:
                 while read_distance() < STOP_DISTANCE:
-                    control_speed(*rotate())
+                    control_speed(*rotate(direction=avoid_direction))
                     d = read_distance()
                 avoid_direction = avoid_direction * -1
             
