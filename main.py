@@ -165,9 +165,10 @@ def retrieve_sound_theta_and_r():
     # # except:
     # #     print("[ERROR] failed to retrieve sound data properly")
     # #     return 0, 800
-    theta = int(input("Theta:"))
-    r = int(input("R:"))
-    return theta, r
+    # theta = int(input("Theta:"))
+    # r = int(input("R:"))
+    # return theta, r
+    return 0, 0
 
 def orient():
     # stop moving and take a reading
