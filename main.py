@@ -234,7 +234,7 @@ if __name__ == "__main__":
                 while read_distance() < STOP_DISTANCE:
                     control_speed(*rotate())
                     d = read_distance()
-                time.sleep(1)  # finish the turn
+                time.sleep(0.5)  # finish the turn
             
             # Straight travel
             print("going straight")
